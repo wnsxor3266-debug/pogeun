@@ -2,6 +2,7 @@ import { useState } from 'react'
 import CloudLogo from './components/CloudLogo'
 import SleepCycleCalculator from './components/SleepCycleCalculator'
 import SleepAgeTest from './components/SleepAgeTest'
+import SleepScienceInfo from './components/SleepScienceInfo'
 import './App.css'
 
 type View = 'calculator' | 'sleepTest'
@@ -16,7 +17,12 @@ function App() {
         <p className="app__brand">포근</p>
       </header>
 
-      {view === 'calculator' && <SleepCycleCalculator onOpenSleepTest={() => setView('sleepTest')} />}
+      {view === 'calculator' && (
+        <>
+          <SleepCycleCalculator onOpenSleepTest={() => setView('sleepTest')} />
+          <SleepScienceInfo />
+        </>
+      )}
       {view === 'sleepTest' && <SleepAgeTest onBack={() => setView('calculator')} />}
     </div>
   )

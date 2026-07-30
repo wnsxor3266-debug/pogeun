@@ -586,6 +586,11 @@
   align-items: center;
   text-align: center;
   gap: 40px;
+  background: linear-gradient(180deg, rgba(242, 239, 233, 0.045) 0%, rgba(242, 239, 233, 0.018) 100%);
+  border: 1px solid rgba(242, 239, 233, 0.1);
+  border-radius: 28px;
+  padding: 36px 24px 32px;
+  box-shadow: var(--shadow-card);
 }
 
 .calculator__hero {
@@ -851,4 +856,152 @@
   50% {
     opacity: 1;
   }
+}
+
+/* ---------- Sleep science info (SEO reading section) ---------- */
+
+.info {
+  width: 100%;
+  margin-top: 48px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  text-align: left;
+  gap: 40px;
+}
+
+.info__block {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.info__heading {
+  margin: 0;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-weight: 500;
+  font-size: clamp(19px, 5vw, 22px);
+  letter-spacing: -0.1px;
+  line-height: 1.4;
+  color: #d9b56a;
+  text-shadow: 0 0 16px rgba(217, 181, 106, 0.18);
+  text-wrap: balance;
+}
+
+.info__text {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.75;
+  color: rgba(242, 239, 233, 0.82);
+}
+
+.info__lead {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.7;
+  color: #9c9ac4;
+}
+
+.info__source {
+  margin: 0;
+  font-size: 12px;
+  color: rgba(242, 239, 233, 0.4);
+}
+
+.sleep-table {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.sleep-table__row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 13px 16px;
+  background: linear-gradient(180deg, rgba(242, 239, 233, 0.04) 0%, rgba(242, 239, 233, 0.018) 100%);
+  border: 1px solid rgba(242, 239, 233, 0.08);
+  border-radius: 14px;
+}
+
+.sleep-table__label {
+  font-size: 14px;
+  color: #f2efe9;
+}
+
+.sleep-table__value {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-variant-numeric: tabular-nums;
+  font-size: 15px;
+  font-weight: 600;
+  color: #d9b56a;
+  white-space: nowrap;
+}
+
+.usage-list,
+.stage-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.usage-list__item {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 14px 16px;
+  background: linear-gradient(180deg, rgba(242, 239, 233, 0.035) 0%, rgba(242, 239, 233, 0.015) 100%);
+  border: 1px solid rgba(242, 239, 233, 0.08);
+  border-radius: 14px;
+}
+
+.usage-list__title {
+  margin: 0;
+  font-size: 14.5px;
+  font-weight: 600;
+  color: #f2efe9;
+}
+
+.usage-list__desc {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.65;
+  color: #9c9ac4;
+}
+
+.stage-list__item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.stage-list__name {
+  margin: 0;
+  font-size: 14.5px;
+  font-weight: 600;
+  color: #d9b56a;
+}
+
+.stage-list__desc {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.7;
+  color: rgba(242, 239, 233, 0.82);
+}
+
+.info__disclaimer {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.6;
+  color: rgba(242, 239, 233, 0.4);
+  padding-top: 8px;
+  border-top: 1px solid rgba(242, 239, 233, 0.08);
+}
+
+.info__references {
+  margin: 0;
+  font-size: 11px;
+  color: rgba(242, 239, 233, 0.3);
 }
