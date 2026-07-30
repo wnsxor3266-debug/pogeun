@@ -1,0 +1,17 @@
+{
+  "name": "포근",
+  "short_name": "포근",
+  "description": "90분 수면 주기로 찾는 나만의 최적 시간",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#1C2033",
+  "theme_color": "#1C2033",
+  "lang": "ko",
+  "icons": [
+    { "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml" },
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

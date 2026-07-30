@@ -1,9 +1,15 @@
-function CloudLogo() {
+type CloudLogoProps = {
+  size?: number
+}
+
+function CloudLogo({ size = 72 }: CloudLogoProps) {
+  const height = Math.round(size * 0.7222)
+
   return (
     <svg
       className="cloud-logo"
-      width="72"
-      height="52"
+      width={size}
+      height={height}
       viewBox="0 0 96 68"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

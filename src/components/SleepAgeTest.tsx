@@ -42,11 +42,7 @@ const defaultAnswers: SleepAnswers = {
   fatigue: 3,
 }
 
-type SleepAgeTestProps = {
-  onBack: () => void
-}
-
-function SleepAgeTest({ onBack }: SleepAgeTestProps) {
+function SleepAgeTest() {
   const [phase, setPhase] = useState<Phase>('question')
   const [step, setStep] = useState(0)
   const [answers, setAnswers] = useState<SleepAnswers>(defaultAnswers)
@@ -264,15 +260,9 @@ function SleepAgeTest({ onBack }: SleepAgeTestProps) {
           </form>
 
           <div className="result__footer">
-            <div className="result-footer-links">
-              <button type="button" className="restart" onClick={restart}>
-                다시 테스트하기
-              </button>
-              <span className="result-footer-links__dot">·</span>
-              <button type="button" className="restart" onClick={onBack}>
-                계산기로 돌아가기
-              </button>
-            </div>
+            <button type="button" className="restart" onClick={restart}>
+              다시 테스트하기
+            </button>
 
             <p className="disclaimer">본 결과는 일반적인 수면 습관 참고용이며 의학적 진단이 아닙니다.</p>
           </div>

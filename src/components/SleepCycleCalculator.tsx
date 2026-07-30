@@ -1,14 +1,12 @@
 import { useMemo, useState } from 'react'
 import TimePicker from './TimePicker'
+import BedtimeReminder from './BedtimeReminder'
+import TodayTip from './TodayTip'
 import { getBedOptionsFromWakeTime, getWakeOptionsFromBedTime, getWakeOptionsFromNow } from '../remSleep'
 
 type Mode = 'now' | 'wake' | 'bed'
 
-type SleepCycleCalculatorProps = {
-  onOpenSleepTest: () => void
-}
-
-function SleepCycleCalculator({ onOpenSleepTest }: SleepCycleCalculatorProps) {
+function SleepCycleCalculator() {
   const [mode, setMode] = useState<Mode>('now')
   const [wakeTimeInput, setWakeTimeInput] = useState('07:00')
   const [bedTimeInput, setBedTimeInput] = useState('23:30')
@@ -31,6 +29,8 @@ function SleepCycleCalculator({ onOpenSleepTest }: SleepCycleCalculatorProps) {
         </h1>
         <p className="calculator__subtitle">90분 수면 주기로 찾는 최적의 시간</p>
       </div>
+
+      <TodayTip />
 
       <div className="mode-select">
         <div className="mode-tabs">
@@ -88,9 +88,7 @@ function SleepCycleCalculator({ onOpenSleepTest }: SleepCycleCalculatorProps) {
         </div>
       </div>
 
-      <button type="button" className="secondary-link" onClick={onOpenSleepTest}>
-        내 수면은 건강할까? 수면 나이 테스트 →
-      </button>
+      <BedtimeReminder />
     </div>
   )
 }
