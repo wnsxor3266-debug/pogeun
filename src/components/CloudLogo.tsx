@@ -15,8 +15,12 @@ function CloudLogo() {
         fill="#F2EFE9"
         fillOpacity="0.92"
       />
-      <path d="M80 4L82.9 12.1L91 15L82.9 17.9L80 26L77.1 17.9L69 15L77.1 12.1L80 4Z" fill="#D9B56A" />
-      <circle cx="66" cy="6" r="2.4" fill="#D9B56A" />
+      <path
+        className="cloud-logo__star"
+        d="M80 4L82.9 12.1L91 15L82.9 17.9L80 26L77.1 17.9L69 15L77.1 12.1L80 4Z"
+        fill="#D9B56A"
+      />
+      <circle className="cloud-logo__star" cx="66" cy="6" r="2.4" fill="#D9B56A" />
     </svg>
   )
 }

@@ -23,9 +23,34 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   min-height: 100svh;
+  position: relative;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(1px 1px at 11% 16%, rgba(242, 239, 233, 0.55) 0%, transparent 100%),
+    radial-gradient(1px 1px at 79% 9%, rgba(242, 239, 233, 0.4) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 35% 41%, rgba(242, 239, 233, 0.32) 0%, transparent 100%),
+    radial-gradient(1px 1px at 61% 64%, rgba(242, 239, 233, 0.28) 0%, transparent 100%),
+    radial-gradient(1px 1px at 89% 28%, rgba(242, 239, 233, 0.42) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 21% 77%, rgba(242, 239, 233, 0.26) 0%, transparent 100%),
+    radial-gradient(1px 1px at 51% 91%, rgba(242, 239, 233, 0.22) 0%, transparent 100%),
+    radial-gradient(1px 1px at 6% 55%, rgba(242, 239, 233, 0.2) 0%, transparent 100%),
+    radial-gradient(1px 1px at 93% 68%, rgba(242, 239, 233, 0.24) 0%, transparent 100%),
+    radial-gradient(640px 640px at 82% -8%, rgba(217, 181, 106, 0.1) 0%, transparent 70%),
+    radial-gradient(520px 520px at 6% 105%, rgba(143, 141, 196, 0.09) 0%, transparent 70%),
+    linear-gradient(180deg, #21253c 0%, #1c2033 42%, #171a2a 100%);
+  background-repeat: no-repeat;
 }
 
 #root {
+  position: relative;
+  z-index: 1;
   min-height: 100svh;
 }
 
