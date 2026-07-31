@@ -4,6 +4,7 @@ import SleepCycleCalculator from './components/SleepCycleCalculator'
 import SleepAgeTest from './components/SleepAgeTest'
 import SleepLog from './components/SleepLog'
 import TipsScreen from './components/TipsScreen'
+import StoreScreen from './components/StoreScreen'
 import MoreScreen from './components/MoreScreen'
 import TabBar, { type TabId } from './components/TabBar'
 import { calculateStreak, loadSleepLogs } from './sleepLog'
@@ -13,6 +14,7 @@ const TAB_TITLES: Record<TabId, string> = {
   home: '포근',
   log: '수면 기록',
   tips: '오늘의 팁',
+  store: '수면 스토어',
   more: '더보기',
 }
 
@@ -57,6 +59,7 @@ function App() {
         {tab === 'home' && <SleepCycleCalculator />}
         {tab === 'log' && <SleepLog />}
         {tab === 'tips' && <TipsScreen />}
+        {tab === 'store' && <StoreScreen />}
         {tab === 'more' && <MoreScreen onOpenSleepTest={() => setSleepTestOpen(true)} />}
       </div>
 

@@ -1,7 +1,9 @@
 import { useMemo, useState } from 'react'
 import TimePicker from './TimePicker'
 import ChipGroup from './ChipGroup'
+import ContextProductRecommend from './ContextProductRecommend'
 import { formatDuration } from '../sleepAge'
+import { getPersonalizedRecommendation } from '../productRecommend'
 import {
   addSleepLog,
   calculateStreak,
@@ -39,6 +41,7 @@ function SleepLog() {
   const streak = useMemo(() => calculateStreak(logs), [logs])
   const history = useMemo(() => [...logs].sort((a, b) => b.date.localeCompare(a.date)), [logs])
   const chartEntries = useMemo(() => [...logs].sort((a, b) => a.date.localeCompare(b.date)).slice(-14), [logs])
+  const personalizedReco = useMemo(() => getPersonalizedRecommendation(logs), [logs])
 
   return (
     <div className="sleep-log fade-in">
@@ -67,6 +70,10 @@ function SleepLog() {
             {formatDateLabel(savedEntry.date)} · {formatDuration(savedEntry.durationMinutes)} 수면
           </p>
         </div>
+      )}
+
+      {personalizedReco && (
+        <ContextProductRecommend hook={personalizedReco.hook} productIds={personalizedReco.productIds} />
       )}
 
       <div className="log-form">

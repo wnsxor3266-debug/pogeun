@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react'
 import TimePicker from './TimePicker'
 import BedtimeReminder from './BedtimeReminder'
 import TodayTip from './TodayTip'
+import ContextProductRecommend from './ContextProductRecommend'
 import { getBedOptionsFromWakeTime, getWakeOptionsFromBedTime, getWakeOptionsFromNow } from '../remSleep'
 
 type Mode = 'now' | 'wake' | 'bed'
@@ -86,6 +87,8 @@ function SleepCycleCalculator() {
             </div>
           ))}
         </div>
+
+        <ContextProductRecommend hook="더 깊은 잠을 위해" productIds={['eye-mask', 'aroma-diffuser']} />
       </div>
 
       <BedtimeReminder />
