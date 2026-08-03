@@ -34,7 +34,15 @@ export const PRODUCTS: Product[] = [
     description: '빛에 예민한 분들이 많이 찾는 암막 안대예요.',
     category: 'sleepGoods',
     imageUrl: '',
-    affiliateUrl: '', // TODO: 쿠팡파트너스 링크
+    affiliateUrl: 'https://link.coupang.com/a/fT6l8CMc6C',
+  },
+  {
+    id: 'mood-light',
+    name: '무드등',
+    description: '은은한 빛으로 편안한 잠자리 분위기를 만들어주는 조명이에요.',
+    category: 'sleepGoods',
+    imageUrl: '',
+    affiliateUrl: 'https://link.coupang.com/a/fT6rRG2edg',
   },
   {
     id: 'white-noise',
