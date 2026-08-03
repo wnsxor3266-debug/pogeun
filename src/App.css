@@ -1647,64 +1647,40 @@
   gap: 12px;
 }
 
-/* ---------- Product carousel (auto-scrolling "conveyor belt") ---------- */
+/* ---------- Product carousel (auto-scrolling "conveyor belt") ----------
+   Real horizontal scroller (not a CSS transform animation) so it can be
+   auto-advanced via JS (ProductCarousel.tsx nudging scrollLeft) while
+   still staying fully touch/drag/wheel scrollable by hand. */
 
 .context-promo__carousel {
   width: 100%;
-  overflow: hidden;
+  overflow-x: auto;
+  overflow-y: hidden;
+  touch-action: pan-x;
+  scroll-snap-type: x proximity;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
   margin: 0 -22px;
   padding: 0 22px;
   -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 22px, #000 calc(100% - 22px), transparent 100%);
   mask-image: linear-gradient(90deg, transparent 0, #000 22px, #000 calc(100% - 22px), transparent 100%);
 }
 
+.context-promo__carousel::-webkit-scrollbar {
+  display: none;
+}
+
 .context-promo__track {
   display: flex;
   width: max-content;
   gap: 14px;
-  animation: promo-scroll 36s linear infinite;
-  will-change: transform;
 }
 
 .context-promo__carousel .product-card {
   flex: 0 0 auto;
   width: min(200px, 70vw);
-}
-
-@keyframes promo-scroll {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-50%);
-  }
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .context-promo__carousel:hover .context-promo__track {
-    animation-play-state: paused;
-  }
-}
-
-.context-promo__track:active {
-  animation-play-state: paused;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .context-promo__carousel {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-  }
-
-  .context-promo__carousel::-webkit-scrollbar {
-    display: none;
-  }
-
-  .context-promo__track {
-    animation: none;
-  }
+  scroll-snap-align: start;
 }
 
 .product-card {

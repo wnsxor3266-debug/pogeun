@@ -1,11 +1,12 @@
 import { PRODUCTS } from '../products'
 import ProductCard from './ProductCard'
+import ProductCarousel from './ProductCarousel'
 import CoupangDisclosure from './CoupangDisclosure'
 
 type ContextProductRecommendProps = {
   hook: string
   productIds: string[]
-  /** 켜면 카드가 자동으로 왼쪽으로 흐르는 무한 슬라이드로 표시돼요. */
+  /** 켜면 카드가 자동으로 흐르면서 손으로도 넘길 수 있는 캐러셀로 표시돼요. */
   carousel?: boolean
 }
 
@@ -19,13 +20,7 @@ function ContextProductRecommend({ hook, productIds, carousel = false }: Context
         {hook} <span className="context-promo__arrow">→</span> 이런 아이템은 어때요?
       </p>
       {carousel ? (
-        <div className="context-promo__carousel">
-          <div className="context-promo__track">
-            {[...products, ...products].map((product, index) => (
-              <ProductCard key={`${product.id}-${index}`} product={product} />
-            ))}
-          </div>
-        </div>
+        <ProductCarousel products={products} />
       ) : (
         <div className="context-promo__cards">
           {products.map((product) => (
