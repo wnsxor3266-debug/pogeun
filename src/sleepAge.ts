@@ -1,4 +1,6 @@
 export type SleepAnswers = {
+  /** 연령대 시작값 (20/30/40/50/60). 정확한 나이 대신 부담 없는 연령대로 받아요. */
+  ageRangeStart: number
   bedTime: string
   wakeTime: string
   fallAsleepMinutes: number
@@ -10,6 +12,11 @@ export type SleepResult = {
   age: number
   durationMinutes: number
   tips: string[]
+  /** 입력한 연령대의 중앙값(예: 30대 → 35) */
+  actualAgeMidpoint: number
+  /** 연령대 중앙값 - 수면 나이. 양수면 수면 나이가 더 젊다는 뜻 */
+  ageDiff: number
+  comparisonLabel: string
 }
 
 function toMinutes(time: string): number {
@@ -73,6 +80,17 @@ function fatigueTip(fatigue: number): string {
 const CONSISTENCY_TIP =
   '주말과 평일 구분 없이 비슷한 시각에 자고 일어나는 루틴을 유지하는 것을 권장해요.'
 
+/** 연령대 시작값을 그 연령대의 중앙값으로 변환해요 (예: 30대 → 35세, 60대 이상 → 65세). */
+function ageRangeMidpoint(ageRangeStart: number): number {
+  return ageRangeStart + 5
+}
+
+function buildComparisonLabel(ageDiff: number): string {
+  if (ageDiff >= 3) return `실제보다 ${ageDiff}살 젊은 수면!`
+  if (ageDiff <= -3) return `수면 나이가 ${Math.abs(ageDiff)}살 더 많아요`
+  return '나이에 딱 맞는 건강한 수면'
+}
+
 export function calculateSleepAge(answers: SleepAnswers): SleepResult {
   const durationMinutes = sleepDurationMinutes(answers.bedTime, answers.wakeTime)
   const idealMinutes = 7.5 * 60
@@ -93,5 +111,8 @@ export function calculateSleepAge(answers: SleepAnswers): SleepResult {
     CONSISTENCY_TIP,
   ]
 
-  return { age, durationMinutes, tips }
+  const actualAgeMidpoint = ageRangeMidpoint(answers.ageRangeStart)
+  const ageDiff = actualAgeMidpoint - age
+
+  return { age, durationMinutes, tips, actualAgeMidpoint, ageDiff, comparisonLabel: buildComparisonLabel(ageDiff) }
 }

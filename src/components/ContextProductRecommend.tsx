@@ -5,9 +5,11 @@ import CoupangDisclosure from './CoupangDisclosure'
 type ContextProductRecommendProps = {
   hook: string
   productIds: string[]
+  /** 켜면 카드가 자동으로 왼쪽으로 흐르는 무한 슬라이드로 표시돼요. */
+  carousel?: boolean
 }
 
-function ContextProductRecommend({ hook, productIds }: ContextProductRecommendProps) {
+function ContextProductRecommend({ hook, productIds, carousel = false }: ContextProductRecommendProps) {
   const products = PRODUCTS.filter((product) => productIds.includes(product.id))
   if (products.length === 0) return null
 
@@ -16,11 +18,21 @@ function ContextProductRecommend({ hook, productIds }: ContextProductRecommendPr
       <p className="context-promo__hook">
         {hook} <span className="context-promo__arrow">→</span> 이런 아이템은 어때요?
       </p>
-      <div className="context-promo__cards">
-        {products.map((product) => (
-          <ProductCard key={product.id} product={product} />
-        ))}
-      </div>
+      {carousel ? (
+        <div className="context-promo__carousel">
+          <div className="context-promo__track">
+            {[...products, ...products].map((product, index) => (
+              <ProductCard key={`${product.id}-${index}`} product={product} />
+            ))}
+          </div>
+        </div>
+      ) : (
+        <div className="context-promo__cards">
+          {products.map((product) => (
+            <ProductCard key={product.id} product={product} />
+          ))}
+        </div>
+      )}
       <CoupangDisclosure />
     </section>
   )

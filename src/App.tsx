@@ -26,7 +26,7 @@ function App() {
   if (sleepTestOpen) {
     return (
       <div className="app">
-        <header className="app-header">
+        <header className="app-header app-header--modal">
           <button
             type="button"
             className="app-header__close"
@@ -47,13 +47,16 @@ function App() {
 
   return (
     <div className="app">
-      <header className="app-header">
+      <header className="app-header app-header--main">
         <span className="app-header__leading">
           <CloudLogo size={26} />
+          <span className="app-header__brand">포근</span>
         </span>
         <p className="app-header__title">{TAB_TITLES[tab]}</p>
         <span className="app-header__spacer" />
       </header>
+
+      <TabBar active={tab} onChange={setTab} logStreak={streak} />
 
       <div className="app-screen">
         {tab === 'home' && <SleepCycleCalculator />}
@@ -62,8 +65,6 @@ function App() {
         {tab === 'store' && <StoreScreen />}
         {tab === 'more' && <MoreScreen onOpenSleepTest={() => setSleepTestOpen(true)} />}
       </div>
-
-      <TabBar active={tab} onChange={setTab} logStreak={streak} />
     </div>
   )
 }

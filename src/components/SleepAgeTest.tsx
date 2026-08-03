@@ -4,7 +4,15 @@ import ChipGroup from './ChipGroup'
 import TimePicker from './TimePicker'
 import { calculateSleepAge, formatDuration, type SleepAnswers } from '../sleepAge'
 
-const TOTAL_STEPS = 5
+const TOTAL_STEPS = 6
+
+const AGE_RANGE_OPTIONS = [
+  { label: '20대', value: 20 },
+  { label: '30대', value: 30 },
+  { label: '40대', value: 40 },
+  { label: '50대', value: 50 },
+  { label: '60대 이상', value: 60 },
+]
 
 const LATENCY_OPTIONS = [
   { label: '5분', value: 5 },
@@ -35,6 +43,7 @@ const FATIGUE_OPTIONS = [
 type Phase = 'question' | 'calculating' | 'result'
 
 const defaultAnswers: SleepAnswers = {
+  ageRangeStart: 30,
   bedTime: '23:30',
   wakeTime: '07:00',
   fallAsleepMinutes: 15,
@@ -127,6 +136,17 @@ function SleepAgeTest() {
 
           {step === 0 && (
             <section className="question fade-in">
+              <h1 className="question__title">연령대가 어떻게 되세요?</h1>
+              <ChipGroup
+                options={AGE_RANGE_OPTIONS}
+                value={answers.ageRangeStart}
+                onChange={(v) => setAnswers((a) => ({ ...a, ageRangeStart: v }))}
+              />
+            </section>
+          )}
+
+          {step === 1 && (
+            <section className="question fade-in">
               <h1 className="question__title">평소 몇 시에 잠자리에 드시나요?</h1>
               <TimePicker
                 value={answers.bedTime}
@@ -135,7 +155,7 @@ function SleepAgeTest() {
             </section>
           )}
 
-          {step === 1 && (
+          {step === 2 && (
             <section className="question fade-in">
               <h1 className="question__title">평소 몇 시에 일어나시나요?</h1>
               <TimePicker
@@ -145,7 +165,7 @@ function SleepAgeTest() {
             </section>
           )}
 
-          {step === 2 && (
+          {step === 3 && (
             <section className="question fade-in">
               <h1 className="question__title">잠드는 데 보통 얼마나 걸리나요?</h1>
               <ChipGroup
@@ -156,7 +176,7 @@ function SleepAgeTest() {
             </section>
           )}
 
-          {step === 3 && (
+          {step === 4 && (
             <section className="question fade-in">
               <h1 className="question__title">밤중에 몇 번 정도 깨시나요?</h1>
               <ChipGroup
@@ -167,7 +187,7 @@ function SleepAgeTest() {
             </section>
           )}
 
-          {step === 4 && (
+          {step === 5 && (
             <section className="question fade-in">
               <h1 className="question__title">낮 동안 피로는 어느 정도인가요?</h1>
               <ChipGroup
@@ -207,6 +227,7 @@ function SleepAgeTest() {
               <span className="result__age">{result.age}</span>
               <span className="result__unit">세</span>
             </div>
+            <p className="result__diff">{result.comparisonLabel}</p>
           </div>
 
           <div className="result__info-card">

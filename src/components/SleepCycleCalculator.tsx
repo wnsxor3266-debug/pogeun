@@ -4,6 +4,7 @@ import BedtimeReminder from './BedtimeReminder'
 import TodayTip from './TodayTip'
 import ContextProductRecommend from './ContextProductRecommend'
 import { getBedOptionsFromWakeTime, getWakeOptionsFromBedTime, getWakeOptionsFromNow } from '../remSleep'
+import { PRODUCTS } from '../products'
 
 type Mode = 'now' | 'wake' | 'bed'
 
@@ -88,7 +89,11 @@ function SleepCycleCalculator() {
           ))}
         </div>
 
-        <ContextProductRecommend hook="더 깊은 잠을 위해" productIds={['eye-mask', 'aroma-diffuser']} />
+        <ContextProductRecommend
+          hook="더 깊은 잠을 위해"
+          productIds={PRODUCTS.map((product) => product.id)}
+          carousel
+        />
       </div>
 
       <BedtimeReminder />
