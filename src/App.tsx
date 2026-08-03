@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import CloudLogo from './components/CloudLogo'
 import SleepCycleCalculator from './components/SleepCycleCalculator'
 import SleepAgeTest from './components/SleepAgeTest'
@@ -21,7 +21,30 @@ const TAB_TITLES: Record<TabId, string> = {
 function App() {
   const [tab, setTab] = useState<TabId>('home')
   const [sleepTestOpen, setSleepTestOpen] = useState(false)
+  const [updateAvailable, setUpdateAvailable] = useState(false)
   const streak = calculateStreak(loadSleepLogs())
+
+  useEffect(() => {
+    if (!('serviceWorker' in navigator)) return
+
+    // 이 로드 시점에 이미 다른 SW가 페이지를 제어하고 있었다면(=재방문),
+    // 이후의 controllerchange는 진짜 업데이트예요. 처음 설치되는 경우엔
+    // controller가 없다가 생기는 것뿐이라 업데이트 안내를 띄우지 않아요.
+    const hadController = Boolean(navigator.serviceWorker.controller)
+
+    function handleControllerChange() {
+      if (hadController) setUpdateAvailable(true)
+    }
+
+    navigator.serviceWorker.addEventListener('controllerchange', handleControllerChange)
+    return () => navigator.serviceWorker.removeEventListener('controllerchange', handleControllerChange)
+  }, [])
+
+  const updateBanner = updateAvailable && (
+    <button type="button" className="toast toast--update" onClick={() => window.location.reload()}>
+      포근이 업데이트됐어요 · 눌러서 새로고침
+    </button>
+  )
 
   if (sleepTestOpen) {
     return (
@@ -41,6 +64,7 @@ function App() {
         <div className="app-screen push-in">
           <SleepAgeTest />
         </div>
+        {updateBanner}
       </div>
     )
   }
@@ -65,6 +89,8 @@ function App() {
         {tab === 'store' && <StoreScreen />}
         {tab === 'more' && <MoreScreen onOpenSleepTest={() => setSleepTestOpen(true)} />}
       </div>
+
+      {updateBanner}
     </div>
   )
 }

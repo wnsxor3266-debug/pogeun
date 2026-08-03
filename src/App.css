@@ -600,6 +600,25 @@
   text-align: center;
 }
 
+.toast--update {
+  z-index: 40;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.toast--update::before {
+  content: '';
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin-right: 8px;
+  border-radius: 50%;
+  background: #d9b56a;
+  box-shadow: 0 0 8px rgba(217, 181, 106, 0.7);
+  vertical-align: middle;
+}
+
 @keyframes toast-in {
   from {
     opacity: 0;
