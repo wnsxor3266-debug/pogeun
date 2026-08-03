@@ -33,7 +33,8 @@ export const PRODUCTS: Product[] = [
     name: '수면 안대',
     description: '빛에 예민한 분들이 많이 찾는 암막 안대예요.',
     category: 'sleepGoods',
-    imageUrl: '',
+    imageUrl:
+      'https://thumbnail.coupangcdn.com/thumbnails/remote/492x492ex/image/vendor_inventory/ae2e/fe08bdbc3ecc7a345d786c1dd1c49cb99fbe1ab1e6f75fb912832409ded4.webp',
     affiliateUrl: 'https://link.coupang.com/a/fT6l8CMc6C',
   },
   {
@@ -41,7 +42,8 @@ export const PRODUCTS: Product[] = [
     name: '무드등',
     description: '은은한 빛으로 편안한 잠자리 분위기를 만들어주는 조명이에요.',
     category: 'sleepGoods',
-    imageUrl: '',
+    imageUrl:
+      'https://thumbnail.coupangcdn.com/thumbnails/remote/492x492ex/image/vendor_inventory/4812/7d72e75d105b7c7fea9043da5f82375a69873546d5d97ea324ed061a307f.jpg',
     affiliateUrl: 'https://link.coupang.com/a/fT6rRG2edg',
   },
   {
