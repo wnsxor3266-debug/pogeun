@@ -67,8 +67,9 @@ export const PRODUCTS: Product[] = [
     name: '아로마 디퓨저',
     description: '은은한 향으로 잠들기 전 마음을 편안하게 해주는 디퓨저예요.',
     category: 'aroma',
-    imageUrl: '',
-    affiliateUrl: '', // TODO: 쿠팡파트너스 링크
+    imageUrl:
+      'https://thumbnail.coupangcdn.com/thumbnails/remote/492x492ex/image/vendor_inventory/d265/f798018fe829f373a3b7c1cc55bec35a38b266d58a85ae772344b0c3cdc6.png',
+    affiliateUrl: 'https://link.coupang.com/a/fT7T0YJHUq',
   },
   {
     id: 'sleep-tea',
