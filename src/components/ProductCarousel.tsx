@@ -4,12 +4,13 @@ import type { Product } from '../products'
 
 type ProductCarouselProps = {
   products: Product[]
+  location: string
 }
 
 const LOOP_SECONDS = 36
 const RESUME_DELAY_MS = 2500
 
-function ProductCarousel({ products }: ProductCarouselProps) {
+function ProductCarousel({ products, location }: ProductCarouselProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const pausedRef = useRef(false)
   const resumeTimerRef = useRef<number | undefined>(undefined)
@@ -101,7 +102,7 @@ function ProductCarousel({ products }: ProductCarouselProps) {
     <div className="context-promo__carousel" ref={containerRef}>
       <div className="context-promo__track">
         {[...products, ...products].map((product, index) => (
-          <ProductCard key={`${product.id}-${index}`} product={product} />
+          <ProductCard key={`${product.id}-${index}`} product={product} location={location} />
         ))}
       </div>
     </div>

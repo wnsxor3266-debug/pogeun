@@ -1,8 +1,13 @@
-import { useEffect, useState, type FormEvent } from 'react'
+import { useEffect, useRef, useState, type FormEvent } from 'react'
+import { toPng } from 'html-to-image'
 import CloudLogo from './CloudLogo'
 import ChipGroup from './ChipGroup'
 import TimePicker from './TimePicker'
+import SleepAgeShareCard from './SleepAgeShareCard'
 import { calculateSleepAge, formatDuration, type SleepAnswers } from '../sleepAge'
+import { trackCustom, trackEvent } from '../metaPixel'
+
+const canNativeShare = typeof navigator !== 'undefined' && typeof navigator.share === 'function'
 
 const TOTAL_STEPS = 6
 
@@ -58,11 +63,18 @@ function SleepAgeTest() {
   const [toast, setToast] = useState<string | null>(null)
   const [email, setEmail] = useState('')
   const [emailSubmitted, setEmailSubmitted] = useState(false)
+  const shareCardRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     if (phase !== 'calculating') return
     const timer = setTimeout(() => setPhase('result'), 1400)
     return () => clearTimeout(timer)
+  }, [phase])
+
+  // phase가 'result'로 바뀌는 시점에 한 번만 보내면 돼서 result는 deps에서 의도적으로 제외했어요.
+  useEffect(() => {
+    if (phase !== 'result') return
+    trackCustom('CompleteTest', { sleepAge: result.age, ageDiff: result.ageDiff })
   }, [phase])
 
   useEffect(() => {
@@ -93,21 +105,65 @@ function SleepAgeTest() {
     setPhase('question')
   }
 
-  async function handleShare() {
-    const shareText = `저의 수면 나이는 ${result.age}세예요. 당신의 수면 나이도 확인해보세요 🌙`
+  function buildShareText() {
     const shareUrl = window.location.href
+    return `내 수면 나이는 ${result.age}세, ${result.comparisonLabel} 당신도 테스트 → ${shareUrl}`
+  }
 
-    if (navigator.share) {
+  async function captureShareCardDataUrl(): Promise<string | null> {
+    if (!shareCardRef.current) return null
+    try {
+      return await toPng(shareCardRef.current, {
+        pixelRatio: 2,
+        cacheBust: true,
+        backgroundColor: '#1c2033',
+      })
+    } catch {
+      setToast('이미지 생성에 실패했어요')
+      return null
+    }
+  }
+
+  async function handleShare() {
+    const shareText = buildShareText()
+    const dataUrl = await captureShareCardDataUrl()
+
+    if (dataUrl && navigator.canShare) {
       try {
-        await navigator.share({ title: '포근 · 수면 나이 테스트', text: shareText, url: shareUrl })
+        const blob = await (await fetch(dataUrl)).blob()
+        const file = new File([blob], 'pogeun-sleep-age.png', { type: 'image/png' })
+        if (navigator.canShare({ files: [file] })) {
+          await navigator.share({ files: [file], text: shareText, title: '포근 · 수면 나이 테스트' })
+          return
+        }
       } catch {
-        // 사용자가 공유를 취소한 경우
+        // 사용자가 이미지 공유를 취소한 경우
+        return
       }
-      return
     }
 
-    await navigator.clipboard.writeText(`${shareText} ${shareUrl}`)
-    setToast('카카오톡에 붙여넣을 공유 문구가 복사되었어요')
+    try {
+      await navigator.share({ title: '포근 · 수면 나이 테스트', text: shareText })
+    } catch {
+      // 사용자가 공유를 취소한 경우
+    }
+  }
+
+  async function handleSaveImage() {
+    const dataUrl = await captureShareCardDataUrl()
+    if (!dataUrl) return
+    const link = document.createElement('a')
+    link.href = dataUrl
+    link.download = 'pogeun-sleep-age.png'
+    link.click()
+    setToast('이미지가 저장되었어요')
+  }
+
+  function handleTwitterShare() {
+    const shareUrl = window.location.href
+    const tweetText = `내 수면 나이는 ${result.age}세, ${result.comparisonLabel} 당신도 테스트 →`
+    const intentUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(tweetText)}&url=${encodeURIComponent(shareUrl)}`
+    window.open(intentUrl, '_blank', 'noopener,noreferrer')
   }
 
   async function handleCopyLink() {
@@ -122,6 +178,7 @@ function SleepAgeTest() {
       return
     }
     setEmailSubmitted(true)
+    trackEvent('Lead')
   }
 
   return (
@@ -220,6 +277,10 @@ function SleepAgeTest() {
       )}
 
       {phase === 'result' && (
+        <SleepAgeShareCard ref={shareCardRef} age={result.age} comparisonLabel={result.comparisonLabel} />
+      )}
+
+      {phase === 'result' && (
         <main className="result fade-in">
           <div className="result__hero">
             <p className="result__label">당신의 수면 나이는</p>
@@ -248,13 +309,27 @@ function SleepAgeTest() {
           </div>
 
           <div className="share-row">
-            <button type="button" className="btn btn--primary btn--pill" onClick={handleShare}>
-              카카오톡 공유
-            </button>
-            <button type="button" className="btn btn--ghost btn--pill" onClick={handleCopyLink}>
-              링크 복사
-            </button>
+            {canNativeShare ? (
+              <>
+                <button type="button" className="btn btn--primary btn--pill" onClick={handleShare}>
+                  공유하기
+                </button>
+                <button type="button" className="btn btn--ghost btn--pill" onClick={handleSaveImage}>
+                  이미지 저장
+                </button>
+              </>
+            ) : (
+              <>
+                <button type="button" className="btn btn--primary btn--pill" onClick={handleTwitterShare}>
+                  X 공유
+                </button>
+                <button type="button" className="btn btn--ghost btn--pill" onClick={handleCopyLink}>
+                  링크 복사
+                </button>
+              </>
+            )}
           </div>
+          {canNativeShare && <p className="share-hint">저장 후 인스타 스토리에 올려보세요</p>}
 
           <form className="email-form" onSubmit={handleEmailSubmit}>
             <label className="email-form__label" htmlFor="notify-email">

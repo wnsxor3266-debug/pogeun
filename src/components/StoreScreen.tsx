@@ -22,7 +22,7 @@ function StoreScreen() {
             <h2 className="store-category__heading">{PRODUCT_CATEGORIES[category].label}</h2>
             <div className="store-category__grid">
               {items.map((product) => (
-                <ProductCard key={product.id} product={product} />
+                <ProductCard key={product.id} product={product} location="store_tab" />
               ))}
             </div>
           </div>

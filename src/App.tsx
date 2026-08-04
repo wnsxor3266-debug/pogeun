@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import CloudLogo from './components/CloudLogo'
 import SleepCycleCalculator from './components/SleepCycleCalculator'
 import SleepAgeTest from './components/SleepAgeTest'
@@ -6,8 +6,10 @@ import SleepLog from './components/SleepLog'
 import TipsScreen from './components/TipsScreen'
 import StoreScreen from './components/StoreScreen'
 import MoreScreen from './components/MoreScreen'
+import PrivacyScreen from './components/PrivacyScreen'
 import TabBar, { type TabId } from './components/TabBar'
 import { calculateStreak, loadSleepLogs } from './sleepLog'
+import { trackCustom, trackPageView } from './metaPixel'
 import './App.css'
 
 const TAB_TITLES: Record<TabId, string> = {
@@ -21,8 +23,10 @@ const TAB_TITLES: Record<TabId, string> = {
 function App() {
   const [tab, setTab] = useState<TabId>('home')
   const [sleepTestOpen, setSleepTestOpen] = useState(false)
+  const [privacyOpen, setPrivacyOpen] = useState(false)
   const [updateAvailable, setUpdateAvailable] = useState(false)
   const streak = calculateStreak(loadSleepLogs())
+  const isFirstPageView = useRef(true)
 
   useEffect(() => {
     if (!('serviceWorker' in navigator)) return
@@ -39,6 +43,25 @@ function App() {
     navigator.serviceWorker.addEventListener('controllerchange', handleControllerChange)
     return () => navigator.serviceWorker.removeEventListener('controllerchange', handleControllerChange)
   }, [])
+
+  useEffect(() => {
+    function handleAppInstalled() {
+      trackCustom('InstallPWA')
+    }
+    window.addEventListener('appinstalled', handleAppInstalled)
+    return () => window.removeEventListener('appinstalled', handleAppInstalled)
+  }, [])
+
+  // index.html 베이스 코드가 최초 로드 시 PageView를 이미 보내므로,
+  // 여기서는 탭/테스트 모달 전환(=가상 페이지 변경)에만 추가로 쏴요.
+  const virtualPage = sleepTestOpen ? 'sleep_test' : privacyOpen ? 'privacy' : tab
+  useEffect(() => {
+    if (isFirstPageView.current) {
+      isFirstPageView.current = false
+      return
+    }
+    trackPageView()
+  }, [virtualPage])
 
   const updateBanner = updateAvailable && (
     <button type="button" className="toast toast--update" onClick={() => window.location.reload()}>
@@ -69,6 +92,29 @@ function App() {
     )
   }
 
+  if (privacyOpen) {
+    return (
+      <div className="app">
+        <header className="app-header app-header--modal">
+          <button
+            type="button"
+            className="app-header__close"
+            onClick={() => setPrivacyOpen(false)}
+            aria-label="닫기"
+          >
+            ✕
+          </button>
+          <p className="app-header__title">개인정보 처리방침</p>
+          <span className="app-header__spacer" />
+        </header>
+        <div className="app-screen push-in">
+          <PrivacyScreen />
+        </div>
+        {updateBanner}
+      </div>
+    )
+  }
+
   return (
     <div className="app">
       <header className="app-header app-header--main">
@@ -87,7 +133,9 @@ function App() {
         {tab === 'log' && <SleepLog />}
         {tab === 'tips' && <TipsScreen />}
         {tab === 'store' && <StoreScreen />}
-        {tab === 'more' && <MoreScreen onOpenSleepTest={() => setSleepTestOpen(true)} />}
+        {tab === 'more' && (
+          <MoreScreen onOpenSleepTest={() => setSleepTestOpen(true)} onOpenPrivacy={() => setPrivacyOpen(true)} />
+        )}
       </div>
 
       {updateBanner}

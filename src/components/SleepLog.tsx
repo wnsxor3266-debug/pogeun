@@ -73,7 +73,11 @@ function SleepLog() {
       )}
 
       {personalizedReco && (
-        <ContextProductRecommend hook={personalizedReco.hook} productIds={personalizedReco.productIds} />
+        <ContextProductRecommend
+          hook={personalizedReco.hook}
+          productIds={personalizedReco.productIds}
+          location="log_recommend"
+        />
       )}
 
       <div className="log-form">

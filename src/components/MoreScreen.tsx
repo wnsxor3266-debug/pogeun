@@ -2,9 +2,10 @@ import SleepScienceInfo from './SleepScienceInfo'
 
 type MoreScreenProps = {
   onOpenSleepTest: () => void
+  onOpenPrivacy: () => void
 }
 
-function MoreScreen({ onOpenSleepTest }: MoreScreenProps) {
+function MoreScreen({ onOpenSleepTest, onOpenPrivacy }: MoreScreenProps) {
   return (
     <div className="more-screen fade-in">
       <button type="button" className="secondary-link secondary-link--feature" onClick={onOpenSleepTest}>
@@ -12,6 +13,10 @@ function MoreScreen({ onOpenSleepTest }: MoreScreenProps) {
       </button>
 
       <SleepScienceInfo />
+
+      <button type="button" className="secondary-link" onClick={onOpenPrivacy}>
+        개인정보 처리방침
+      </button>
     </div>
   )
 }

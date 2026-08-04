@@ -1,12 +1,19 @@
 import { PRODUCT_CATEGORIES, type Product } from '../products'
+import { trackCustom } from '../metaPixel'
 
 type ProductCardProps = {
   product: Product
+  /** 쿠팡 링크 클릭 위치 구분용 (예: 'store_tab', 'home_carousel') */
+  location: string
 }
 
-function ProductCard({ product }: ProductCardProps) {
+function ProductCard({ product, location }: ProductCardProps) {
   const { Icon } = PRODUCT_CATEGORIES[product.category]
   const hasLink = product.affiliateUrl.trim().length > 0
+
+  function handleClick() {
+    trackCustom('ClickStore', { product: product.name, location })
+  }
 
   return (
     <div className="product-card">
@@ -30,6 +37,7 @@ function ProductCard({ product }: ProductCardProps) {
           href={product.affiliateUrl}
           target="_blank"
           rel="noopener noreferrer sponsored"
+          onClick={handleClick}
         >
           보러가기 →
         </a>

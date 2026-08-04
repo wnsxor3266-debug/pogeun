@@ -5,6 +5,7 @@ import TodayTip from './TodayTip'
 import ContextProductRecommend from './ContextProductRecommend'
 import { getBedOptionsFromWakeTime, getWakeOptionsFromBedTime, getWakeOptionsFromNow } from '../remSleep'
 import { PRODUCTS } from '../products'
+import { trackCustom } from '../metaPixel'
 
 type Mode = 'now' | 'wake' | 'bed'
 
@@ -12,6 +13,11 @@ function SleepCycleCalculator() {
   const [mode, setMode] = useState<Mode>('now')
   const [wakeTimeInput, setWakeTimeInput] = useState('07:00')
   const [bedTimeInput, setBedTimeInput] = useState('23:30')
+
+  function selectMode(next: Mode) {
+    setMode(next)
+    trackCustom('CalculateSleep')
+  }
 
   const options = useMemo(() => {
     if (mode === 'wake') return getBedOptionsFromWakeTime(wakeTimeInput)
@@ -39,21 +45,21 @@ function SleepCycleCalculator() {
           <button
             type="button"
             className={`mode-tab ${mode === 'now' ? 'is-active' : ''}`}
-            onClick={() => setMode('now')}
+            onClick={() => selectMode('now')}
           >
             지금 잘래요
           </button>
           <button
             type="button"
             className={`mode-tab ${mode === 'wake' ? 'is-active' : ''}`}
-            onClick={() => setMode('wake')}
+            onClick={() => selectMode('wake')}
           >
             기상시간 정하기
           </button>
           <button
             type="button"
             className={`mode-tab ${mode === 'bed' ? 'is-active' : ''}`}
-            onClick={() => setMode('bed')}
+            onClick={() => selectMode('bed')}
           >
             취침시간 정하기
           </button>
@@ -92,6 +98,7 @@ function SleepCycleCalculator() {
         <ContextProductRecommend
           hook="더 깊은 잠을 위해"
           productIds={PRODUCTS.map((product) => product.id)}
+          location="home_carousel"
           carousel
         />
       </div>
